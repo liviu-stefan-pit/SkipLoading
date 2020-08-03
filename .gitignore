@@ -363,3 +363,5 @@ obj/
 [Tt]est[Rr]esult*
 #Nuget packages folder
 packages/
+/SkipLoading/.vs/SkipLoading/v16/.suo
+/SkipLoading/SkipLoading/obj/Debug/SkipLoading.csprojAssemblyReference.cache
