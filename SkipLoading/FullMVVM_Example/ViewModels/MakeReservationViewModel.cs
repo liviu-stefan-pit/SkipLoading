@@ -1,5 +1,6 @@
 ﻿using FullMVVM_Example.Commands;
 using FullMVVM_Example.Models;
+using FullMVVM_Example.Stores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,10 +86,11 @@ namespace FullMVVM_Example.ViewModels
 
         public ICommand CancelCommand { get; }
 
-        public MakeReservationViewModel(Hotel hotel)
+        public MakeReservationViewModel(Hotel hotel,
+            Services.NavigationService reservationViewNavigationService)
         {
-            SubmitCommand = new MakeReservationCommand(this, hotel);
-            CancelCommand = new CancelReservationCommand();
+            SubmitCommand = new MakeReservationCommand(this, hotel, reservationViewNavigationService);
+            CancelCommand = new NavigateCommand(reservationViewNavigationService);
         }
     }
 }

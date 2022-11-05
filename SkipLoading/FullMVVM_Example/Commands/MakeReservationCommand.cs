@@ -1,5 +1,6 @@
 ﻿using FullMVVM_Example.Exceptions;
 using FullMVVM_Example.Models;
+using FullMVVM_Example.Services;
 using FullMVVM_Example.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,14 @@ namespace FullMVVM_Example.Commands
     public class MakeReservationCommand : CommandBase
     {
         private readonly Hotel _hotel;
+        private readonly NavigationService _reservationViewNavigationService;
         private readonly MakeReservationViewModel _makeReservationViewModel;
 
-        public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel, Hotel hotel)
+        public MakeReservationCommand(MakeReservationViewModel makeReservationViewModel, Hotel hotel,
+            NavigationService reservationViewNavigationService)
         {
             _hotel = hotel;
+            _reservationViewNavigationService = reservationViewNavigationService;
             _makeReservationViewModel = makeReservationViewModel;
 
             _makeReservationViewModel.PropertyChanged += _makeReservationViewModel_PropertyChanged;
@@ -40,6 +44,10 @@ namespace FullMVVM_Example.Commands
             try
             {
                 _hotel.MakeReservation(reservation);
+
+                MessageBox.Show("Reservation made!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                _reservationViewNavigationService.Navigate();
             }
             catch (ReservationConflictException)
             {
