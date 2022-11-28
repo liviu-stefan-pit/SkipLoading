@@ -1,7 +1,9 @@
-﻿using FullMVVM_Example.Models;
+﻿using FullMVVM_Example.DbContexts;
+using FullMVVM_Example.Models;
 using FullMVVM_Example.Services;
 using FullMVVM_Example.Stores;
 using FullMVVM_Example.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -17,6 +19,7 @@ namespace FullMVVM_Example
     /// </summary>
     public partial class App : Application
     {
+        public const string CONNECTION_STRING = "Data Source=reservoom.db";
         private readonly Hotel _hotel;
         private readonly NavigationStore _navigationStore;
 
@@ -28,6 +31,13 @@ namespace FullMVVM_Example
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            DbContextOptions options = new DbContextOptionsBuilder().UseSqlite(CONNECTION_STRING).Options;
+
+            using (ReservroomDbContext dbContext = new ReservroomDbContext(options))
+            {
+                dbContext.Database.Migrate();
+            }
+
             _navigationStore.CurrentViewModel = CreateReservationViewModel();
 
             MainWindow = new MainWindow
