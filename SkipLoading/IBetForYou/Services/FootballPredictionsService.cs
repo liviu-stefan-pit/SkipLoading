@@ -1,4 +1,5 @@
-﻿using PuppeteerSharp;
+﻿using IBetForYou.Models.ScrapperModels;
+using PuppeteerSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +71,8 @@ namespace IBetForYou.Services
 
                 string[] queryResultTeams = await GetQueryResultTeams(page);
                 string[] queryResultScores = await GetQueryResultScores(page);
+
+                //TODO: map this to the object and add to list
 
                 //for (int i = 0; i < queryResult.Length; i += 3)
                 //{

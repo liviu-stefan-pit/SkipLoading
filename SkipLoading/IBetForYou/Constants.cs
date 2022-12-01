@@ -12,5 +12,7 @@ namespace IBetForYou
         public const string PredictZTomorrow = "https://www.predictz.com/predictions/tomorrow/";
 
         public const string FootBallPredictions = "https://footballpredictions.com/footballpredictions/";
+
+        public const string Forebet = "https://www.forebet.com/en/football-tips-and-predictions-for-today";
     }
 }

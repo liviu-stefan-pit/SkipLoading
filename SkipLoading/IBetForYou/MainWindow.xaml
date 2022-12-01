@@ -11,7 +11,11 @@
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Button Height="25" Width="125" Content="PredictZ" Click="Button_Click" Margin="10"/>
+        <StackPanel Orientation="Horizontal">
+            <Button Height="25" Width="125" Content="PredictZ" Click="Button_Click" Margin="10"/>
+            <Button x:Name="btnTestData" Height="25" Width="125" Content="Test Data" Click="btnTestData_Click" Margin="10"/>
+        </StackPanel>
+        
         <ListView x:Name="lstGames" Grid.Row="1">
             <ListView.View>
                 <GridView>
