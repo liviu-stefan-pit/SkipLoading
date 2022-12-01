@@ -8,32 +8,32 @@ using System.Threading.Tasks;
 
 namespace IBetForYou.Scrappers
 {
-    public class ForebetScrapper
+    public class WinDrawWinScrapper
     {
         private static string TeamsQuery =
-           "document.querySelectorAll(\".homeTeam, .awayTeam\")";
+          "document.querySelectorAll(\".wtdesklnk\")";
         private string ScoreQuery =
-            "document.querySelectorAll(\".ex_sc.tabonly\")";
+            "document.querySelectorAll(\".wttd.wtsc\")";
 
         private IBrowser? _browser;
 
-        public ForebetScrapper(IBrowser? browser)
+        public WinDrawWinScrapper(IBrowser? browser)
         {
             _browser = browser;
         }
 
-        public async Task<string[]> GetQueryResultTeams(IPage page)
+        public async Task<IEnumerable<string>> GetQueryResultTeams(IPage page)
         {
             var jsSelectAllAnchors = $@"Array.from({TeamsQuery})
-                            .map(t => t.firstChild.innerText);";
+                            .map(t => t.innerText);";
             var queryResult = await page.EvaluateExpressionAsync<string[]>(jsSelectAllAnchors);
             return queryResult;
         }
 
-        public async Task<string[]> GetQueryResultScore(IPage page)
+        public async Task<IEnumerable<string>> GetQueryResultScore(IPage page)
         {
             var jsSelectAllAnchors = $@"Array.from({ScoreQuery})
-                            .map(t => t.outerText);";
+                            .map(t => t.innerText);";
             var queryResult = await page.EvaluateExpressionAsync<string[]>(jsSelectAllAnchors);
             return queryResult;
         }
@@ -44,7 +44,7 @@ namespace IBetForYou.Scrappers
             {
                 var waitUntil = new WaitUntilNavigation[] { WaitUntilNavigation.Networkidle2 };
 
-                await page.GoToAsync(Constants.Forebet, waitUntil: waitUntil);
+                await page.GoToAsync(Constants.WinDrawWin, waitUntil: waitUntil);
 
                 await page.SetViewportAsync(new ViewPortOptions
                 {
@@ -52,10 +52,10 @@ namespace IBetForYou.Scrappers
                     Height = 500
                 });
 
-                string[] teams = await GetQueryResultTeams(page);
-                string[] scores = await GetQueryResultScore(page);
+                IEnumerable<string> teams = await GetQueryResultTeams(page);
+                IEnumerable<string> scores = await GetQueryResultScore(page);
 
-                return new QueryResult(teams, scores, Models.Enums.Website.Forebet);
+                return new QueryResult(teams, scores, Models.Enums.Website.WinDrawWin);
             }
         }
     }

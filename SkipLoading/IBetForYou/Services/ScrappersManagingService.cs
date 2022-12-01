@@ -12,6 +12,8 @@ namespace IBetForYou.Services
 
         private PredictzScrapper _predictzScrapper;
 
+        private WinDrawWinScrapper _winDrawWinScrapper;
+
         private IBrowser? _browser;
 
         private List<QueryResult?> _results;
@@ -26,6 +28,7 @@ namespace IBetForYou.Services
 
             _forebetScrapper = new ForebetScrapper(_browser);
             _predictzScrapper = new PredictzScrapper(_browser);
+            _winDrawWinScrapper = new WinDrawWinScrapper(_browser);
 
             _ = GetData();
         }
@@ -34,9 +37,11 @@ namespace IBetForYou.Services
         {
             var forebetResult = await _forebetScrapper.GetWebsiteData();
             var predictzResult = await  _predictzScrapper.GetWebsiteData();
+            var wdwResult = await _winDrawWinScrapper.GetWebsiteData();
 
             _results.Add(forebetResult);
             _results.Add(predictzResult);
+            _results.Add(wdwResult);
 
             await _browser.CloseAsync();
         }

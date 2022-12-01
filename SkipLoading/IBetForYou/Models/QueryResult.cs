@@ -31,7 +31,9 @@ namespace IBetForYou.Models
             {
                 return ForebetGamesBuilder();
             }
-            else if(website == Website.PredictZ)
+            else if(
+                website == Website.PredictZ || 
+                website == Website.WinDrawWin)
             {
                 return PredictzGamesBuilder();
             }

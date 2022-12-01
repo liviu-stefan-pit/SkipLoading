@@ -9,6 +9,7 @@ namespace IBetForYou.Models.Enums
     public enum Website
     {
         Forebet,
-        PredictZ
+        PredictZ,
+        WinDrawWin
     }
 }
