@@ -36,66 +36,74 @@ namespace IBetForYou
 
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-            //PredictzService predictzService = new PredictzService();
-            //var games = await predictzService.GetAlmostSurebets(true);
+            List<GamePrediction> games = new List<GamePrediction>();
 
-            //FootballPredictionsService footballPredictionsService = new FootballPredictionsService();
-            //var games2 = await footballPredictionsService.GetWebsiteData();
-            //Forebet forebet = new Forebet();
-            //await forebet.GetWebsiteData();
+            List<Game> gameList = BuildGameList();
+            var groupedGames = gameList.GroupBy(x => x.Id);
 
-            //ScrappersManagingService managingService = new ScrappersManagingService();
+            List<Prediction> finalPredictions = new();
 
-            List<MatchPrediction> games = new List<MatchPrediction>();
-
-            var res = managingService.Results;
-
-            foreach (var r in res)
+            foreach (var group in groupedGames)
             {
-                foreach (var game in r.Games)
+                //consider grups of 1 unsure
+                if(group.Count() > 1)
                 {
-                    games.Add(new MatchPrediction
-                    {
-                        HomeTeam = game.HomeTeam,
-                        AwayTeam = game.AwayTeam,
-                        ScorePrediction = game.Score
-                    });
+                    Prediction pred = new Prediction(group.ToList());
+                    finalPredictions.Add(pred);
                 }
             }
 
-            SerializeToJson(games);
+            _ = finalPredictions.Count();
 
-            List<ListViewItem> viewItems = new();
+            List<Prediction> mixedPredictions = finalPredictions.Where(p => p.MixedPrediction != 3).ToList();
+            // SerializeToJson(games);
 
-            foreach (var item in games)
-            {
-                ListViewItem game = new ListViewItem();
-                game.Content = item;
+            //List<ListViewItem> viewItems = new();
 
-                string[] score = item.ScorePrediction.Split("-");
-                int.TryParse(score.FirstOrDefault(), out int hts);
-                int.TryParse(score.LastOrDefault(), out int ats);
+            //foreach (var item in games)
+            //{
+            //    ListViewItem game = new ListViewItem();
+            //    game.Content = item;
 
-                if (hts == ats)
-                {
-                    game.Background = Brushes.Yellow;
-                }
-                else if (hts > ats)
-                {
-                    game.Background = Brushes.LightGreen;
-                }
-                else
-                {
-                    game.Background = Brushes.Red;
-                }
+            //    string[] score = item.Score.Split("-");
+            //    int.TryParse(score.FirstOrDefault(), out int hts);
+            //    int.TryParse(score.LastOrDefault(), out int ats);
 
-                viewItems.Add(game);
-            }
+            //    if (hts == ats)
+            //    {
+            //        game.Background = Brushes.Yellow;
+            //    }
+            //    else if (hts > ats)
+            //    {
+            //        game.Background = Brushes.LightGreen;
+            //    }
+            //    else
+            //    {
+            //        game.Background = Brushes.Red;
+            //    }
 
-            this.lstGames.ItemsSource = viewItems;
+            //    viewItems.Add(game);
+            //}
+
+            this.lstGames.ItemsSource = mixedPredictions;
         }
 
-        private void SerializeToJson(List<MatchPrediction> viewItems)
+        private List<Game> BuildGameList()
+        {
+            List<Game> gameList = new();
+
+            foreach (var queryResult in managingService.Results)
+            {
+                foreach (var game in queryResult.Games)
+                {
+                    gameList.Add(game);
+                }
+            }
+
+            return gameList;
+        }
+
+        private void SerializeToJson(List<GamePrediction> viewItems)
         {
             string json = JsonSerializer.Serialize(viewItems);
 
@@ -105,39 +113,39 @@ namespace IBetForYou
         private void btnTestData_Click(object sender, RoutedEventArgs e)
         {
 
-            List<string> lines = File.ReadAllLines("TestData.txt").ToList();
-            List<MatchPrediction> predictions = new List<MatchPrediction>();
+            //List<string> lines = File.ReadAllLines("TestData.txt").ToList();
+            //List<GamePrediction> predictions = new List<GamePrediction>();
 
-            foreach (var line in lines)
-            {
-                string[] data = line.Split(" ");
+            //foreach (var line in lines)
+            //{
+            //    string[] data = line.Split(" ");
 
-                MatchPrediction matchPrediction = new MatchPrediction
-                {
-                    HomeTeam = data.FirstOrDefault(),
-                    AwayTeam = data.LastOrDefault(),
-                    ScorePrediction = data[1]
-                };
+            //    GamePrediction matchPrediction = new GamePrediction
+            //    {
+            //        HomeTeam = data.FirstOrDefault(),
+            //        AwayTeam = data.LastOrDefault(),
+            //        Score = data[1]
+            //    };
 
-                predictions.Add(matchPrediction);
-            }
+            //    predictions.Add(matchPrediction);
+            //}
 
-            var grouped = predictions.GroupBy(x => x.GameId);
+            //var grouped = predictions.GroupBy(x => x.GameId);
 
-            List<Prediction> finalPredictions = new();
+            //List<Prediction> finalPredictions = new();
 
-            foreach (var group in grouped)
-            {
-                var games = group.ToList();
+            //foreach (var group in grouped)
+            //{
+            //    var games = group.ToList();
 
-                Prediction pred = new Prediction(games);
-                finalPredictions.Add(pred);
-            }
+            //    Prediction pred = new Prediction(games);
+            //    finalPredictions.Add(pred);
+            //}
 
-            _ = finalPredictions.Count();
+            //_ = finalPredictions.Count();
         }
 
-        public MatchPrediction GetGroupPrediction(List<MatchPrediction> groupedPredictions)
+        public GamePrediction GetGroupPrediction(List<GamePrediction> groupedPredictions)
         {
             int awayTeamWins = groupedPredictions.GetAwayTeamWins();
             int homeTeamWins = groupedPredictions.GetHomeTeamWins();
@@ -146,7 +154,7 @@ namespace IBetForYou
 
             foreach (var item in groupedPredictions)
             {
-                scores.Add(item.ScorePrediction);
+                scores.Add(item.Score);
             }
 
             string finalScore = scores.GetFinalScore();

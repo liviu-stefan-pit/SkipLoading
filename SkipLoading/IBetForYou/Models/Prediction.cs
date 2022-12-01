@@ -18,9 +18,12 @@ namespace IBetForYou.Models
 
         private readonly List<(int hScore, int aScore)> _scores;
 
-        public Prediction(List<MatchPrediction> games)
+        private readonly Game? _game;
+
+        public Prediction(List<Game> games)
         {
             _scores = games.GetScores();
+            _game = games.FirstOrDefault();
         }
 
         private int GetWinBasedPredictions()
@@ -74,6 +77,11 @@ namespace IBetForYou.Models
         private int GetDraws()
         {
             return _scores.Where(g => g.hScore == g.aScore).ToList().Count;
+        }
+
+        public override string ToString()
+        {
+            return $"{_game.HomeTeam}-{_game.AwayTeam} : {MixedPrediction}";
         }
     }
 }

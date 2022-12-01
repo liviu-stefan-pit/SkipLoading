@@ -135,7 +135,7 @@ namespace IBetForYou
             var url = "https://www.predictz.com/predictions/";
             var file = "test.jpg";
 
-            List<MatchPrediction> predictions = new List<MatchPrediction>();
+            List<GamePrediction> predictions = new List<GamePrediction>();
 
             var launchOptions = new LaunchOptions()
             {
@@ -171,13 +171,13 @@ namespace IBetForYou
 
                     string score = result[1].Split('\n').FirstOrDefault();
 
-                    predictions.Add(new MatchPrediction
-                    {
-                        HomeTeam = queryResult[i],
-                        AwayTeam = queryResult[i + 2],
-                        FinalResult = finalResult,
-                        ScorePrediction = score
-                    });
+                    //predictions.Add(new GamePrediction
+                    //{
+                    //    HomeTeam = queryResult[i],
+                    //    AwayTeam = queryResult[i + 2],
+                    //    FinalResult = finalResult,
+                    //    Score = score
+                    //});
                 }
 
                 var t = predictions.Count;

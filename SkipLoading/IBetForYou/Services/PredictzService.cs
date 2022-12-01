@@ -10,14 +10,14 @@ namespace IBetForYou.Services
 {
     public class PredictzService
     {
-        public async Task<List<MatchPrediction>> GetAlmostSurebets(bool nextDay = false)
+        public async Task<List<GamePrediction>> GetAlmostSurebets(bool nextDay = false)
         {
             var predictions = await GetWebsiteData(nextDay);
-            List<MatchPrediction> sureGames = new List<MatchPrediction>();
+            List<GamePrediction> sureGames = new List<GamePrediction>();
 
             foreach (var item in predictions)
             {
-                string[] score = item.ScorePrediction.Split("-");
+                string[] score = item.Score.Split("-");
                 int.TryParse(score.FirstOrDefault(), out int hts);
                 int.TryParse(score.LastOrDefault(), out int ats);
 
@@ -41,14 +41,14 @@ namespace IBetForYou.Services
             return sureGames;
         }
 
-        public async Task<List<MatchPrediction>> GetWebsiteData(bool nextDay = false)
+        public async Task<List<GamePrediction>> GetWebsiteData(bool nextDay = false)
         {
             using var browserFetcher = new BrowserFetcher();
             await browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
 
             string url = nextDay ? Constants.PredictZTomorrow : Constants.PredictZ;
 
-            List<MatchPrediction> predictions = new List<MatchPrediction>();
+            List<GamePrediction> predictions = new List<GamePrediction>();
 
             var launchOptions = new LaunchOptions()
             {
@@ -67,13 +67,13 @@ namespace IBetForYou.Services
                 {
                     string[] result = queryResult[i + 1].Split(" ");
 
-                    predictions.Add(new MatchPrediction
-                    {
-                        HomeTeam = queryResult[i],
-                        AwayTeam = queryResult[i + 2],
-                        FinalResult = GetFinalResult(result[0]),
-                        ScorePrediction = GetScore(result[1])
-                    });
+                    //predictions.Add(new GamePrediction
+                    //{
+                    //    HomeTeam = queryResult[i],
+                    //    AwayTeam = queryResult[i + 2],
+                    //    FinalResult = GetFinalResult(result[0]),
+                    //    Score = GetScore(result[1])
+                    //});
                 }
             }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IBetForYou.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
@@ -23,17 +24,17 @@ namespace IBetForYou
             return sum;
         }
 
-        public static int GetHomeTeamWins(this List<MatchPrediction> games)
+        public static int GetHomeTeamWins(this List<GamePrediction> games)
         {
             return games.Where(g => g.AwayTeamScore > g.HomeTeamScore).ToList().Count;
         }
 
-        public static int GetAwayTeamWins(this List<MatchPrediction> games)
+        public static int GetAwayTeamWins(this List<GamePrediction> games)
         {
             return games.Where(g => g.AwayTeamScore < g.HomeTeamScore).ToList().Count;
         }
 
-        public static int GetDraws(this List<MatchPrediction> games)
+        public static int GetDraws(this List<GamePrediction> games)
         {
             return games.Where(g => g.AwayTeamScore == g.HomeTeamScore).ToList().Count;
         }
@@ -60,18 +61,18 @@ namespace IBetForYou
             return $"{homeScore}-{awayScore}";
         }
 
-        public static List<(int hScore, int aScore)> GetScores(this List<MatchPrediction> matchPredictions)
+        public static List<(int hScore, int aScore)> GetScores(this List<Game> matchPredictions)
         {
             List<(int hScore, int aScore)> scores = new();
 
             foreach (var item in matchPredictions)
             {
-                string[] data = item.ScorePrediction.Split("-");
+                string[] data = item.Score.Split("-");
 
                 if(data.Count() > 1)
                 {
-                    int.TryParse(data.FirstOrDefault(), out int r1);
-                    int.TryParse(data.LastOrDefault(), out int r2);
+                    int.TryParse(data.FirstOrDefault().Trim(), out int r1);
+                    int.TryParse(data.LastOrDefault().Trim(), out int r2);
 
                     scores.Add((r1, r2));
                 }
