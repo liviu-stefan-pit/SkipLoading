@@ -1,6 +1,7 @@
 ﻿using IBetForYou.Models;
 using IBetForYou.Models.ScrapperModels;
 using IBetForYou.Services;
+using IBetForYou.TestingLojic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -31,7 +32,7 @@ namespace IBetForYou
         {
             InitializeComponent();
 
-            managingService = new ScrappersManagingService();
+            //managingService = new ScrappersManagingService();
         }
 
         private async void Button_Click(object sender, RoutedEventArgs e)
@@ -112,9 +113,52 @@ namespace IBetForYou
 
         private void btnTestData_Click(object sender, RoutedEventArgs e)
         {
+            List<string> lines = File.ReadAllLines("TestData.txt").ToList();
+            List<GameObject> gameObjects = new List<GameObject>();
 
-            //List<string> lines = File.ReadAllLines("TestData.txt").ToList();
-            //List<GamePrediction> predictions = new List<GamePrediction>();
+            foreach (var line in lines)
+            {
+                string[] data = line.Split(":");
+
+                GameObject gameObject = new GameObject()
+                {
+                    HomeTeam = data[0].Trim(),
+                    AwayTeam = data[2].Trim(),
+                    Score = data[1].Trim()
+                };
+
+                gameObjects.Add(gameObject);
+            }
+
+            for (int i = 0; i < gameObjects.Count - 1; i++)
+            {
+                for (int j = 1; j < gameObjects.Count; j++)
+                {
+                    if (gameObjects[i].HomeTeam == gameObjects[j].AwayTeam &&
+                        gameObjects[i].AwayTeam == gameObjects[j].HomeTeam)
+                    {
+                        char[] charArray = gameObjects[j].Score.ToCharArray();
+                        Array.Reverse(charArray);
+
+                        gameObjects[j] = new GameObject
+                        {
+                            HomeTeam = gameObjects[j].AwayTeam,
+                            AwayTeam = gameObjects[j].HomeTeam,
+                            Score = new string(charArray)
+                        };
+                    }
+                }
+            }
+
+            var grouped = gameObjects.GroupBy(x => x.Id);
+
+            foreach (var group in grouped)
+            {
+                if (group.Count() < 2)
+                    continue;
+
+                var predictions = DoPrediction(group.ToList());
+            }
 
             //foreach (var line in lines)
             //{
@@ -143,6 +187,22 @@ namespace IBetForYou
             //}
 
             //_ = finalPredictions.Count();
+        }
+
+        private PredictionObject DoPrediction(List<GameObject> gameObjects)
+        {
+            string predictions = string.Empty;
+
+            string homeTeam = gameObjects.FirstOrDefault().HomeTeam;
+            string awayTeam = gameObjects.FirstOrDefault().AwayTeam;
+            List<string> scores = new();
+
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                scores.Add(gameObjects[i].Score);
+            }
+
+            return new PredictionObject(homeTeam, awayTeam, scores);
         }
 
         public GamePrediction GetGroupPrediction(List<GamePrediction> groupedPredictions)
