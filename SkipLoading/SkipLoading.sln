@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GoingDynamic", "GoingDynami
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnFire", "OnFire\OnFire.csproj", "{AF6E2382-DF29-47DE-9502-70F04959C5F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IBetForYou", "IBetForYou\IBetForYou.csproj", "{23678928-566D-4515-AFEA-9E79446E36A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IBetForYou", "IBetForYou\IBetForYou.csproj", "{23678928-566D-4515-AFEA-9E79446E36A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StuffGenerator", "StuffGenerator\StuffGenerator.csproj", "{8E0C8190-89C9-4A66-BCBF-51332695D9F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{23678928-566D-4515-AFEA-9E79446E36A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{23678928-566D-4515-AFEA-9E79446E36A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{23678928-566D-4515-AFEA-9E79446E36A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E0C8190-89C9-4A66-BCBF-51332695D9F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E0C8190-89C9-4A66-BCBF-51332695D9F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E0C8190-89C9-4A66-BCBF-51332695D9F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E0C8190-89C9-4A66-BCBF-51332695D9F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

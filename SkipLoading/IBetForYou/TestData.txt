@@ -1,15 +1,1 @@
-﻿asd 1-0 qwe
-
-asd 1-3 qwe
-
-asd 1-1 qwe
-
-asd 1-5 qwe
-
-asd 4-0 qwe
-
-2 = 2
-
-8/5 < 9/5
-
-2 1 3
+﻿

@@ -63,12 +63,10 @@ namespace IBetForYou.Scrappers
                     Height = 500
                 });
 
-
                 var test = await QueryTest(page);
 
                 var teams = await GetQueryResultTeams(page);
                 var scores = await GetQueryResultScore(page);
-
 
                 return new QueryResult(teams, scores, Models.Enums.Website.Forebet);
             }

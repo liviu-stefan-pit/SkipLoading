@@ -48,15 +48,13 @@ namespace IBetForYou.Services
 
         private void InitializeWebBrowser()
         {
-            using var browserFetcher = new BrowserFetcher();
-            browserFetcher.DownloadAsync(BrowserFetcher.DefaultChromiumRevision);
-
-            var launchOptions = new LaunchOptions()
+            var options = new LaunchOptions()
             {
-                Headless = false
+                Headless = false,
+                ExecutablePath = @"C:\Program Files\Google\Chrome\Application\chrome.exe"
             };
 
-            _browser = Puppeteer.LaunchAsync(launchOptions).Result;
+            _browser = Puppeteer.LaunchAsync(options).Result;
         }
     }
 }
