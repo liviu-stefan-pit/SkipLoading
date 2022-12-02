@@ -31,6 +31,16 @@ namespace IBetForYou.Scrappers
             return queryResult;
         }
 
+        public async Task<IEnumerable<Score>> QueryTest(IPage page)
+        {
+            var jsCode = @"() => {
+                        const selectors = Array.from(document.querySelectorAll("".ex_sc.tabonly""));
+                        return selectors.map( t => {return { queryResultScore: t.outerText }});
+                        }";
+            var queryResult = await page.EvaluateFunctionAsync<Score[]>(jsCode);
+            return queryResult;
+        }
+
         public async Task<IEnumerable<string>> GetQueryResultScore(IPage page)
         {
             var jsSelectAllAnchors = $@"Array.from({ScoreQuery})
@@ -53,8 +63,12 @@ namespace IBetForYou.Scrappers
                     Height = 500
                 });
 
+
+                var test = await QueryTest(page);
+
                 var teams = await GetQueryResultTeams(page);
                 var scores = await GetQueryResultScore(page);
+
 
                 return new QueryResult(teams, scores, Models.Enums.Website.Forebet);
             }
