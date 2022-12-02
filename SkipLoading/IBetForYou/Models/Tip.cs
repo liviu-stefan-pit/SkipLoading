@@ -19,10 +19,12 @@
 
         private int GetScore(bool home = false)
         {
-            string[] data = QueryResultScore.Split(" - ");
+            string[] data = QueryResultScore.Split("-");
 
-            int.TryParse(data[1], out int homeS);
-            int.TryParse(data[2], out int awayS);
+            if (data.Length < 1) return -1;
+
+            int.TryParse(data[0], out int homeS);
+            int.TryParse(data[1], out int awayS);
 
             return home ? homeS : awayS;
         }
