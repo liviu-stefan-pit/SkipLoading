@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IBetForYou.Scrappers
 {
-    public class WinDrawWinScrapper
+    public class WinDrawWinScrapper : IScrapper
     {
         private static string TeamsQuery =
           "document.querySelectorAll(\".wtdesklnk\")";

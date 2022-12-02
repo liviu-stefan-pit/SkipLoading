@@ -10,9 +10,9 @@ namespace IBetForYou.Scrappers
 {
     public interface IScrapper
     {
-        Task<string[]> GetQueryResultTeams(IPage page);
+        Task<IEnumerable<string>> GetQueryResultTeams(IPage page);
 
-        Task<string[]> GetQueryResultScore(IPage page);
+        Task<IEnumerable<string>> GetQueryResultScore(IPage page);
 
         Task<QueryResult> GetWebsiteData();
     }

@@ -1,4 +1,5 @@
 ﻿using IBetForYou.Models;
+using ICSharpCode.SharpZipLib.Core;
 using PuppeteerSharp;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace IBetForYou.Scrappers
 {
-    public class ForebetScrapper
+    public class ForebetScrapper : IScrapper
     {
         private static string TeamsQuery =
            "document.querySelectorAll(\".homeTeam, .awayTeam\")";
@@ -22,7 +23,7 @@ namespace IBetForYou.Scrappers
             _browser = browser;
         }
 
-        public async Task<string[]> GetQueryResultTeams(IPage page)
+        public async Task<IEnumerable<string>> GetQueryResultTeams(IPage page)
         {
             var jsSelectAllAnchors = $@"Array.from({TeamsQuery})
                             .map(t => t.firstChild.innerText);";
@@ -30,7 +31,7 @@ namespace IBetForYou.Scrappers
             return queryResult;
         }
 
-        public async Task<string[]> GetQueryResultScore(IPage page)
+        public async Task<IEnumerable<string>> GetQueryResultScore(IPage page)
         {
             var jsSelectAllAnchors = $@"Array.from({ScoreQuery})
                             .map(t => t.outerText);";
@@ -52,8 +53,8 @@ namespace IBetForYou.Scrappers
                     Height = 500
                 });
 
-                string[] teams = await GetQueryResultTeams(page);
-                string[] scores = await GetQueryResultScore(page);
+                var teams = await GetQueryResultTeams(page);
+                var scores = await GetQueryResultScore(page);
 
                 return new QueryResult(teams, scores, Models.Enums.Website.Forebet);
             }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IBetForYou.Scrappers
 {
-    public class PredictzScrapper 
+    public class PredictzScrapper : IScrapper
     {
         private static string TeamsQuery =
            "document.querySelectorAll(\".pttd.ptgame\")";
