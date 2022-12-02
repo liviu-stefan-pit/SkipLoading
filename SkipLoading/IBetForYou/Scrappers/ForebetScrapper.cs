@@ -34,8 +34,8 @@ namespace IBetForYou.Scrappers
         public async Task<IEnumerable<Score>> QueryTest(IPage page)
         {
             var jsCode = @"() => {
-                        const selectors = Array.from(document.querySelectorAll("".ex_sc.tabonly""));
-                        return selectors.map( t => {return { queryResultScore: t.outerText }});
+                            const selectors = Array.from(document.querySelectorAll("".ex_sc.tabonly""));
+                            return selectors.map( t => {return { queryResultScore: t.outerText }});
                         }";
             var queryResult = await page.EvaluateFunctionAsync<Score[]>(jsCode);
             return queryResult;
